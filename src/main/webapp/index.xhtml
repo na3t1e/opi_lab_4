@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+<h:head>
+    <title>WEB LAB 3: START PAGE</title>
+    <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+<h:body>
+    <div id="container" class="margin">
+        <div id="header" class="blured-container round-container margin">
+            <p>Андреева Анастасия и Юхно Таисия</p>
+            <p>Группа: P3231</p>
+            <p>Вариант ОПИ: 32348</p>
+        </div>
+        <div id="clock-container" class="margin blured-container round-container">
+            <p id="clock" >
+                Текущее время:
+            </p>
+        </div>
+        <div id="redirect-container" class="margin blured-container round-container fit-content-container">
+            <h:link outcome="goToMain">
+                WEB LAB 3: MAIN PAGE
+            </h:link>
+        </div>
+    </div>
+    <h:outputScript library="js" name="clock.js"/>
+</h:body>
+</html>

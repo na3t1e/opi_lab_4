@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>WEB LAB 3: MAIN PAGE</title>
+    <link rel="icon" type="image/png" href="https://se.ifmo.ru/o/favicon/" />
+    <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+<h:body>
+    <div id="container" class="margin">
+        <div id="header"  class="blured-container round-container margin">
+            <p>Андреева Анастасия и Юхно Таисия</p>
+            <p>Группа: P3231</p>
+            <p>Вариант ОПИ: 32348</p>
+        </div>
+        <div id="main" class="margin">
+            <div id="choose" class="blured-container round-container margin">
+                <p><b>Enter values:</b></p>
+                <p><b>ATTENTION!!!</b> <i>Every</i> value must be filled in <i>correctly</i>!</p>
+                <h:form id="form">
+                    <div id="x-select-container" class="select-container margin">
+                        <h:outputLabel for="x">Enter X:</h:outputLabel>
+                        <div id="x-select-input" class="select-input-container">
+                            <h:inputText id="x" value="#{point.x}" maxlength="12"
+                                         validatorMessage="X should be between -5 and 5" styleClass="x">
+                                <f:validateDoubleRange minimum="-5" maximum="5"/>
+                                <f:validateRequired/>
+                                <f:ajax event="keyup" render="x-warning" execute="x"/>
+                            </h:inputText>
+                        </div>
+                        <p><h:message id="x-warning" styleClass="warning" for="x"/></p>
+                    </div>
+
+                    <div  id="y-select-container" class="select-container margin">
+                        <h:outputLabel for="y">Select Y:</h:outputLabel>
+                        <div id="y-select-input" class="select-input-container">
+                            <p:inputText type='hidden' value="#{point.y}" name='y' id='y'/>
+                            <div id="y-links">
+                                <h:commandLink value="-2 " id="ylink1">
+                                    <f:ajax event="click" onevent="changeY(this, -2)"/>
+                                </h:commandLink>
+                                <h:commandLink value="-1.5 " id="ylink2">
+                                    <f:ajax event="click" onevent="changeY(this, -1.5)"/>
+                                </h:commandLink>
+                                <h:commandLink value="-1 " id="ylink3">
+                                    <f:ajax event="click" onevent="changeY(this, -1)"/>
+                                </h:commandLink>
+                                <h:commandLink value="-0.5 " id="ylink4">
+                                    <f:ajax event="click" onevent="changeY(this, -0.5)"/>
+                                </h:commandLink>
+                                <h:commandLink value="0 " id="ylink5">
+                                    <f:ajax event="click" onevent="changeY(this, 0)"/>
+                                </h:commandLink>
+                                <h:commandLink value="0.5 " id="ylink6">
+                                    <f:ajax event="click" onevent="changeY(this, 0.5)"/>
+                                </h:commandLink>
+                                <h:commandLink value="1 " id="ylink7">
+                                    <f:ajax event="click" onevent="changeY(this, 1)"/>
+                                </h:commandLink>
+                                <h:commandLink value="1.5 " id="ylink8">
+                                    <f:ajax event="click" onevent="changeY(this, 1.5)"/>
+                                </h:commandLink>
+                            </div>
+                        </div>
+                        <p><h:message id="y-warning" styleClass="warning" for="y"/></p>
+                    </div>
+
+                    <div id="r-select-container" class="select-container margin">
+                        <h:outputLabel for="r">Enter R:</h:outputLabel> <br/>
+                        <div id="r-select-input" class="select-input-container">
+                            <h:inputText id="r" value="#{point.r}" maxlength="12"
+                                         validatorMessage="R should be between 2 and 5" styleClass="y">
+                                <f:validateDoubleRange minimum="2" maximum="5"/>
+                                <f:validateRequired/>
+                                <f:ajax event="keyup" render="r-warning" execute="r"/>
+                            </h:inputText>
+                        </div>
+                        <p><h:message id="r-warning" styleClass="warning" for="r"/></p>
+                    </div>
+
+                    <div id="submit-container" class="margin">
+                        <h:commandButton id="submit-button" value="check" action="#{point.check}" styleClass="button">
+                            <f:ajax execute="@form" render="results-table" onevent="addPoint()"/>
+                        </h:commandButton>
+                    </div>
+
+                    <p:remoteCommand name="addPoint" action="#{table.addPoint}"/>
+                </h:form>
+            </div>
+
+            <div id="graph-container" class="blured-container round-container margin">
+                <canvas id="graphic" width="450px" height="450px"/>
+            </div>
+
+            <div id="result-table-container" class="blured-container margin">
+                <h:dataTable value="#{table.getResults()}" var="row" styleClass="results" headerClass="res-header"
+                             rowClasses="res-row" id="results-table">
+                    <h:column>
+                        <f:facet name="header">x</f:facet>
+                        <h:outputText value="#{row.x}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">y</f:facet>
+                        <h:outputText value="#{row.y}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">r</f:facet>
+                        <h:outputText value="#{row.r}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">hit</f:facet>
+                        <h:outputText value="#{row.hit ? 'hit' : 'miss'}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">attempt time</f:facet>
+                        <h:outputText value="#{row.attemptTime}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                        </h:outputText>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">execution time</f:facet>
+                        <h:outputText value="#{row.executionTime}"/>
+                    </h:column>
+                </h:dataTable>
+            </div>
+        </div>
+
+        <div id="footer" class="blured-container round-container margin">
+            <h:link outcome="goToIndex" styleClass="h-link">
+                WEB LAB 3: START PAGE
+            </h:link>
+            <div class="button-wrap" id="clear-wrap">
+                <h:commandButton id="clear-button" value="clear" action="#{table.clear}" styleClass="button">
+                    <f:ajax render="results-table" onevent="clearPoints()"/>
+                </h:commandButton>
+            </div>
+        </div>
+    </div>
+
+    <h:outputScript library="js" name="main_graphics.js"/>
+    <h:outputScript library="js" name="command_link_changer.js"/>
+    <script type="text/javascript">
+        provideInteractiveGraphics();
+        let x = JSON.parse('#{table.x}');
+        let y = JSON.parse('#{table.y}');
+        let r = JSON.parse('#{table.r}');
+        let hit = JSON.parse('#{table.hit}');
+        savePoints(x, y, r, hit);
+        drawShapesByR(0);
+    </script>
+</h:body>
+</html>
